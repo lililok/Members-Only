@@ -1,0 +1,21 @@
+{
+  "name": "members-only",
+  "version": "1.0.0",
+  "scripts": {
+    "devstart": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "mongoose": "^8.5.1",
+    "nodemon": "^3.1.4",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0"
+  }
+}
