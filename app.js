@@ -32,10 +32,10 @@ app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
-  res.render("index", { user: req.user });
+  res.render("views/index.ejs", { user: req.user });
 });
 
-app.get("/sign-up", (req, res) => res.render("sign-up-form"));
+app.get("/sign-up", (req, res) => res.render("views/sign-up-form"));
 
 app.post("/sign-up", async (req, res, next) => {
   try {

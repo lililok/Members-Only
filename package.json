@@ -17,5 +17,8 @@
     "nodemon": "^3.1.4",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.6"
   }
 }
