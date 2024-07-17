@@ -1,5 +1,3 @@
-/////// app.js
-
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
@@ -9,23 +7,12 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
+var UserRouter = require('./routes/user.js');
 
 const mongoDB = process.env.MONGODB_URI;
 mongoose.connect(mongoDB);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
-
-const User = mongoose.model(
-  "User",
-  new Schema({
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    member: { type: Boolean, default: false },
-    admin: { type: Boolean, default: false }
-  })
-);
 
 const app = express();
 app.set("views", __dirname);
@@ -35,28 +22,7 @@ app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/", (req, res) => {
-  res.render("views/index.ejs", { user: req.user });
-});
-
-app.get("/sign-up", (req, res) => res.render("views/sign-up-form"));
-
-app.post("/sign-up", async (req, res, next) => {
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-    const user = new User({
-      username: req.body.username,
-      password: hashedPassword
-    });
-
-    const result = await user.save();
-
-    res.redirect("/");
-  } catch (err) {
-    next(err);
-  }
-});
+app.use('/', UserRouter);
 
   passport.use(
     new LocalStrategy(async (username, password, done) => {
