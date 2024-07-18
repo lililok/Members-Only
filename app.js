@@ -2,12 +2,12 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const bcrypt = require('bcryptjs');
 require('dotenv').config();
-var UserRouter = require('./routes/user.js');
+
+var UserRouter = require('./routes/userRoutes.js');
 
 const mongoDB = process.env.MONGODB_URI;
 mongoose.connect(mongoDB);
