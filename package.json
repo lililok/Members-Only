@@ -2,12 +2,14 @@
   "name": "members-only",
   "version": "1.0.0",
   "scripts": {
-    "devstart": "nodemon app.js"
+    "devstart": "nodemon app.js",
+    "tailwind:css": "postcss public/stylesheets/input.css -o public/stylesheets/output.css"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "autoprefixer": "^10.4.19",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
@@ -17,7 +19,9 @@
     "mongoose": "^8.5.1",
     "nodemon": "^3.1.4",
     "passport": "^0.7.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "postcss": "^8.4.39",
+    "postcss-cli": "^11.0.0"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.6"
