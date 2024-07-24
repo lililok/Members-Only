@@ -1,10 +1,9 @@
 const asyncHandler = require("express-async-handler");
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const pool = require('../db/pool.js');
 const LocalStrategy = require('passport-local').Strategy;
 require('dotenv').config();
-
-const User = require("../models/userSchema.js");
 
 exports.login = asyncHandler(async (req, res, next) => {
     passport.authenticate("local", {
@@ -15,32 +14,25 @@ exports.login = asyncHandler(async (req, res, next) => {
 
 exports.home = asyncHandler(async (req, res, next) => {
     if (req.isAuthenticated()) {
-        const user = await User.findById(req.user.id);
+        const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [req.user.id]);
+        const user = rows[0];
         res.render("views/home", { user });
-      } else {
+    } else {
         res.redirect("/login");
-      }
+    }
 })
 
 exports.signup = asyncHandler(async (req, res, next) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    
-        const user = new User({
-          firstName: req.body.firstName,
-          lastName: req.body.lastName,
-          username: req.body.username,
-          password: hashedPassword,
-          member: false,
-          admin: false
-        });
-    
-        const result = await user.save();
-    
+        await pool.query("INSERT INTO users (username, password) VALUES ($1, $2)", [
+            req.body.username,
+            hashedPassword,
+        ]);
         res.redirect("/");
-      } catch (err) {
-        next(err);
-      }
+    } catch (err) {
+        return next(err);
+    }
 })
 
 exports.join = asyncHandler(async (req, res, next) => {
@@ -49,14 +41,18 @@ exports.join = asyncHandler(async (req, res, next) => {
 
 passport.use(new LocalStrategy(async (username, password, done) => {
     try {
-        const user = await User.findOne({ username });
+        const { rows } = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
+        const user = rows[0];
         if (!user) {
-            return done(null, false, { message: 'Incorrect username.' });
+            return done(null, false, { message: "Incorrect username" });
         }
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return done(null, false, { message: 'Incorrect password.' });
+
+        const match = await bcrypt.compare(password, user.password);
+
+        if (!match) {
+            return done(null, false, { message: "Incorrect password" });
         }
+
         return done(null, user);
     } catch (err) {
         return done(err);
@@ -65,13 +61,16 @@ passport.use(new LocalStrategy(async (username, password, done) => {
   
 passport.serializeUser((user, done) => {
     done(null, user.id);
-});
-
-passport.deserializeUser(async (id, done) => {
+  });
+  
+  passport.deserializeUser(async (id, done) => {
     try {
-        const user = await User.findById(id);
-        done(null, user);
-    } catch (err) {
-        done(err);
-    }
-});
+      const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
+      const user = rows[0];
+  
+      done(null, user);
+    } catch(err) {
+      done(err);
+    };
+  });
+  
