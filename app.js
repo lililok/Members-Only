@@ -2,7 +2,6 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 const passport = require("passport");
-const { Pool } = require("pg");
 
 var UserRouter = require('./routes/userRoutes.js');
 

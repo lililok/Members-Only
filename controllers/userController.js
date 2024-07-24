@@ -14,7 +14,7 @@ exports.login = asyncHandler(async (req, res, next) => {
 
 exports.home = asyncHandler(async (req, res, next) => {
     if (req.isAuthenticated()) {
-        const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [req.user.id]);
+        const { rows } = await pool.query("SELECT * FROM user_data WHERE id = $1", [req.user.id]);
         const user = rows[0];
         res.render("views/home", { user });
     } else {
@@ -25,9 +25,13 @@ exports.home = asyncHandler(async (req, res, next) => {
 exports.signup = asyncHandler(async (req, res, next) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
-        await pool.query("INSERT INTO users (username, password) VALUES ($1, $2)", [
+        await pool.query("INSERT INTO user_data (firstname, lastname, username, password, member, admin) VALUES ($1, $2, $3, $4, $5, $6)", [
+            req.body.firstname,
+            req.body.lastname,
             req.body.username,
             hashedPassword,
+            false,
+            false
         ]);
         res.redirect("/");
     } catch (err) {
@@ -41,7 +45,7 @@ exports.join = asyncHandler(async (req, res, next) => {
 
 passport.use(new LocalStrategy(async (username, password, done) => {
     try {
-        const { rows } = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
+        const { rows } = await pool.query("SELECT * FROM user_data WHERE username = $1", [username]);
         const user = rows[0];
         if (!user) {
             return done(null, false, { message: "Incorrect username" });
@@ -65,7 +69,7 @@ passport.serializeUser((user, done) => {
   
   passport.deserializeUser(async (id, done) => {
     try {
-      const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
+      const { rows } = await pool.query("SELECT * FROM user_data WHERE id = $1", [id]);
       const user = rows[0];
   
       done(null, user);
