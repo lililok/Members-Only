@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "scripts": {
     "devstart": "nodemon app.js",
-    "tailwind:css": "postcss public/stylesheets/input.css -o public/stylesheets/output.css"
+    "build:css": "npx postcss public/stylesheets/input.css -o public/stylesheets/output.css",
+    "watch:css": "npx tailwindcss -i public/stylesheets/input.css -o public/stylesheets/output.css --watch",
+    "start": "concurrently \"npm run devstart\" \"npm run watch:css\""
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "autoprefixer": "^10.4.19",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
@@ -17,14 +18,18 @@
     "express-async-handler": "^1.2.0",
     "express-session": "^1.18.0",
     "mongoose": "^8.5.1",
-    "nodemon": "^3.1.4",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "pg": "^8.12.0",
-    "postcss": "^8.4.39",
     "postcss-cli": "^11.0.0"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "concurrently": "^8.2.2",
+    "install": "^0.13.0",
+    "nodemon": "^3.1.4",
+    "npm": "^10.8.2",
+    "postcss": "^8.4.40",
     "tailwindcss": "^3.4.6"
   }
 }
