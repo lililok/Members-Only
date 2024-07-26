@@ -1,3 +1,5 @@
+<%- include('layout', { title: 'Join' }) %>
+
 <h1>Enter the secret passcode to join the club!</h1>
 <p>Hint #1: the most popular Queen song</p>
 <p>Hint #2: kebab-cased</p>
@@ -6,3 +8,6 @@
     <input name="passcode" type="passcode" />
     <button>Enter</button>
 </form>
+    <% if (wrong) { %>
+        <p>Try again!</p>
+    <% } %>

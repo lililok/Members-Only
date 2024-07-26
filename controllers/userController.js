@@ -40,7 +40,19 @@ exports.signup = asyncHandler(async (req, res, next) => {
 })
 
 exports.join = asyncHandler(async (req, res, next) => {
-
+    try {
+        if (req.body.passcode === process.env.PASSCODE) {
+            await pool.query("UPDATE user_data SET member = $1 WHERE id = $2", [
+                true,
+                req.user.id
+            ]);
+            res.redirect("/home");
+        } else {
+            res.render("views/join-the-club", {wrong: true});
+        }
+    } catch (err) {
+        return next(err);
+    }
 })
 
 passport.use(new LocalStrategy(async (username, password, done) => {

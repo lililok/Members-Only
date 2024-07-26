@@ -13,7 +13,7 @@ router.get('/home', user_controller.home)
 router.get("/sign-up", (req, res) => res.render("views/sign-up"));
 router.post("/sign-up", user_controller.signup);
 
-router.get("/join-the-club", (req, res) => res.render("views/join-the-club"));
+router.get("/join-the-club", (req, res) => res.render("views/join-the-club", {wrong: false}));
 router.post("/join-the-club", user_controller.join);
 
 router.get("/logout", (req, res, next) => {
