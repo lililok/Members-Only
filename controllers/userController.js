@@ -15,8 +15,19 @@ exports.login = asyncHandler(async (req, res, next) => {
 exports.home = asyncHandler(async (req, res, next) => {
     if (req.isAuthenticated()) {
         const { rows } = await pool.query("SELECT * FROM user_data WHERE id = $1", [req.user.id]);
-        const user = rows[0];
-        res.render("views/home", { user });
+        const user_data = rows[0];
+        res.render("views/home", { user: user_data });
+    } else {
+        res.render("views/home", { user: undefined });
+    }
+})
+
+exports.profile = asyncHandler(async (req, res, next) => {
+    if (req.isAuthenticated()) {
+        const { rows } = await pool.query("SELECT * FROM user_data WHERE id = $1", [req.user.id]);
+        const user_data = rows[0];
+        console.log(user_data)
+        res.render("views/profile", { user: user_data });
     } else {
         res.redirect("/login");
     }

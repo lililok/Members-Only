@@ -1,1 +1,15 @@
 <%- include('layout', { title: 'Profile' }) %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+  hello, <% user.username %>!
+
+  <% if (!user.member) { %>
+    <a href="/join-the-club">Become a member</a>
+  <% } %>
+</body>
+</html>
