@@ -10,7 +10,7 @@
       <div class="">
           <div class="flex justify-between h-16 px-10 shadow items-center">
             <div class="flex items-center space-x-8">
-              <a href="/home" class="text-gray-800 text-lg">Friend club</a>
+              <a href="/home" class="text-gray-800 text-lg font-extrabold">Friend club</a>
           </div>
           <div class="flex space-x-4 items-center">
               <% if (user) { %>
@@ -25,8 +25,23 @@
   </div>
   </nav>
 
-  <% if (user) { %>
-  <a href="/new-message">Create a new message</a>
-  <% } %>
+  <main>  
+    <div class="flex items-center justify-center">
+      <div class="messages"></div>
+
+      <div class="message-btn">
+        <% if (user) { %>
+          <a href="/new-message">
+            <div class="!mt-8">
+              <button class="w-full shadow-xl py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
+                Create a new message
+              </button>
+          </div>
+          </a>
+        <% } %>
+      </div>
+    </div>
+  </main>
+
 </body>
 </html>
