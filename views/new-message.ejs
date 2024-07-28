@@ -1,1 +1,26 @@
 <%- include('layout', { title: 'New message' }) %>
+
+<nav>
+    <div class="">
+        <div class="flex justify-between h-16 px-10 shadow items-center">
+          <div class="flex items-center space-x-8">
+            <a href="/home" class="text-gray-800 text-lg">Friend club</a>
+        </div>
+        <div class="flex space-x-4 items-center">
+          <a href="/profile" class="text-gray-800 text-sm">PROFILE</a>
+          <a href="/logout" class="bg-indigo-600 px-4 py-2 rounded text-white hover:bg-indigo-500 text-sm">LOGOUT</a>
+          </div>
+    </div>
+</div>
+</nav>
+
+<form class="max-w-sm mx-auto">
+    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your message</label>
+    <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Leave a message..."></textarea>
+
+    <div class="!mt-8">
+        <button type="submit" class="w-full shadow-xl py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
+          Submit
+        </button>
+    </div>
+  </form>

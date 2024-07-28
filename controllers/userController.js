@@ -44,7 +44,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
             false,
             false
         ]);
-        res.redirect("/");
+        res.redirect("/home");
     } catch (err) {
         return next(err);
     }
