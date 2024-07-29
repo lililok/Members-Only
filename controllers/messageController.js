@@ -5,9 +5,9 @@ const pool = require('../db/pool.js');
 exports.message_post = asyncHandler(async (req, res, next) => {
     try {
         await pool.query("INSERT INTO messages (id_sender, main_text, send_date) VALUES ($1, $2, $3)", [
-            req.body.firstname,
-            req.body.lastname,
-            req.body.username,
+            req.user.id,
+            req.body.message,
+            new Date(),
         ]);
         res.redirect("/home");
     } catch (err) {

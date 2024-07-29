@@ -27,7 +27,19 @@
 
   <main>  
     <div class="flex items-center justify-center">
-      <div class="messages"></div>
+      <% if (messages) { %>
+        <div class="messages">
+          <ul>
+            <% messages.forEach(message => { %>
+              <li>
+                <p><strong>Message:</strong> <%= message.main_text %></p>
+                <p><strong>Sender ID:</strong> <%= message.id_sender %></p>
+                <p><strong>Send Date:</strong> <%= message.send_date %></p>
+              </li>
+            <% }) %>
+          </ul>
+        </div>
+        <% } %>
 
       <div class="message-btn">
         <% if (user) { %>

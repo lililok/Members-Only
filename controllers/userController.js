@@ -19,7 +19,7 @@ exports.home = asyncHandler(async (req, res, next) => {
         const messages_data="";
         res.render("views/home", { user: user_data, messages: messages_data });
     } else {
-        res.render("views/home", { user: undefined });
+        res.render("views/home", { user: undefined, messages: undefined });
     }
 })
 
