@@ -627,34 +627,8 @@ video {
   height: 18px;
 }
 
-.h-fit {
-  height: -moz-fit-content;
-  height: fit-content;
-}
-
 .h-full {
   height: 100%;
-}
-
-.h-screen {
-  height: 100vh;
-}
-
-.h-svh {
-  height: 100svh;
-}
-
-.h-lvh {
-  height: 100lvh;
-}
-
-.h-dvh {
-  height: 100dvh;
-}
-
-.h-max {
-  height: -moz-max-content;
-  height: max-content;
 }
 
 .min-h-screen {
@@ -871,10 +845,6 @@ video {
 
 .font-semibold {
   font-weight: 600;
-}
-
-.font-bold {
-  font-weight: 700;
 }
 
 .tracking-wide {

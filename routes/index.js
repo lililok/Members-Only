@@ -1,6 +1,7 @@
 const express = require("express");
 
 const user_controller = require("../controllers/userController");
+const message_controller = require("../controllers/messageController");
 
 const router = express.Router();
 
@@ -17,7 +18,7 @@ router.get("/join-the-club", (req, res) => res.render("views/join-the-club", {wr
 router.post("/join-the-club", user_controller.join);
 
 router.get("/new-message", (req, res) => res.render("views/new-message"));
-//router.post("/join-the-club", user_controller.join);
+router.post("/new-message", message_controller.message_post);
 
 router.get("/profile", user_controller.profile);
 

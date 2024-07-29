@@ -16,7 +16,8 @@ exports.home = asyncHandler(async (req, res, next) => {
     if (req.isAuthenticated()) {
         const { rows } = await pool.query("SELECT * FROM user_data WHERE id = $1", [req.user.id]);
         const user_data = rows[0];
-        res.render("views/home", { user: user_data });
+        const messages_data="";
+        res.render("views/home", { user: user_data, messages: messages_data });
     } else {
         res.render("views/home", { user: undefined });
     }
