@@ -14,9 +14,18 @@ exports.login = asyncHandler(async (req, res, next) => {
 
 exports.home = asyncHandler(async (req, res, next) => {
     if (req.isAuthenticated()) {
-        const { rows } = await pool.query("SELECT * FROM user_data WHERE id = $1", [req.user.id]);
-        const user_data = rows[0];
-        const messages_data="";
+        const { rows: userRows } = await pool.query("SELECT * FROM user_data WHERE id = $1", [req.user.id]);
+        const user_data = userRows[0];
+        
+        const { rows: messageRows } = await pool.query(`
+            SELECT messages.id, messages.main_text, messages.send_date, user_data.username
+            FROM messages
+            JOIN user_data ON messages.id_sender = user_data.id
+            WHERE messages.id_sender = $1
+            ORDER BY messages.send_date DESC
+        `, [req.user.id]);
+        
+        const messages_data = messageRows;
         res.render("views/home", { user: user_data, messages: messages_data });
     } else {
         res.render("views/home", { user: undefined, messages: undefined });

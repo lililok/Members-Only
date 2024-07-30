@@ -20,15 +20,35 @@
 </div>
 </nav>
 
-  Hello, <%= user.username %>!
-
-  Info:
-
-  First name: <%= user.firstname %>
-  Last name: <%= user.lastname %>
-
-  <% if (!user.member) { %>
-    <a href="/join-the-club">Become a member</a>
-  <% } %>
+<main class="flex flex-col items-center">
+  
+  <div class="flex flex-col max-w-md p-6 dark:bg-gray-50 dark:text-gray-800 !mt-8">
+    <img src="https://i.pinimg.com/564x/ae/b3/ee/aeb3ee6df79aef23899a5e6cd42dfdcd.jpg" alt="avatar" class="flex-shrink-0 object-cover h-64 rounded-sm sm:h-96 dark:bg-gray-500 aspect-square">
+    <div>
+      <h2 class="text-xl font-semibold"><%= user.firstname %> <%= user.lastname %></h2>
+      <span class="block pb-2 text-sm dark:text-gray-600"><%= user.username %></span>
+      <p>Role: 
+        <% if (user.admin) { %>
+          Admin
+        <% } else if (user.member) { %>
+          Member
+        <% } else { %>
+          Guest
+        <% } %>
+      </p>
+    </div>
+  </div>
+  
+  
+    <% if (!user.member) { %>
+      <a href="/join-the-club">
+        <div class="!mt-8">
+          <button class="w-full shadow-xl py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
+            Become a member
+          </button>
+        </div>
+      </a>
+    <% } %>
+</main>
 </body>
 </html>
