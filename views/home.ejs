@@ -26,18 +26,20 @@
   </nav>
 
   <main>  
-    <div class="flex items-center justify-center">
+    <div class="flex items-center justify-center flex-col p-6">
       <% if (messages) { %>
-        <div class="messages">
-          <ul>
+        <div class="messages grid grid-cols-3 gap-4">
             <% messages.forEach(message => { %>
+            <ul class="border border-gray-200 p-6">
               <li>
                 <p><strong>Message:</strong> <%= message.main_text %></p>
-                <p><strong>Sender ID:</strong> <%= message.id_sender %></p>
-                <p><strong>Send Date:</strong> <%= message.send_date %></p>
+                <% if (user && user.member) { %>
+                  <p><strong>By:</strong> <%= message.username %></p>
+                  <p><%= message.send_date %></p>
+                  <% } %>
               </li>
+            </ul>
             <% }) %>
-          </ul>
         </div>
         <% } %>
 
