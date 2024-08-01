@@ -22,15 +22,26 @@ exports.home = asyncHandler(async (req, res, next) => {
         ORDER BY messages.send_date DESC
         LIMIT 10
     `);
-    console.log(messageRows)
     const messages_data = messageRows;
+
+    const formattedMessages = messageRows.map(message => ({
+        ...message,
+        send_date: new Date(message.send_date).toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+        }),
+    }));
 
     if (req.isAuthenticated()) {
         const { rows: userRows } = await pool.query("SELECT * FROM user_data WHERE id = $1", [req.user.id]);
         user_data = userRows[0];
     }
     
-    res.render("views/home", { user: user_data, messages: messages_data });
+    res.render("views/home", { user: user_data, messages: formattedMessages });
 });
 
 exports.profile = asyncHandler(async (req, res, next) => {
@@ -61,18 +72,22 @@ exports.signup = asyncHandler(async (req, res, next) => {
 })
 
 exports.join = asyncHandler(async (req, res, next) => {
-    try {
-        if (req.body.passcode === process.env.PASSCODE) {
-            await pool.query("UPDATE user_data SET member = $1 WHERE id = $2", [
-                true,
-                req.user.id
-            ]);
-            res.redirect("/home");
-        } else {
-            res.render("views/join-the-club", {wrong: true});
+    if (req.isAuthenticated()) {
+        try {
+            if (req.body.passcode === process.env.PASSCODE) {
+                await pool.query("UPDATE user_data SET member = $1 WHERE id = $2", [
+                    true,
+                    req.user.id
+                ]);
+                res.redirect("/home");
+            } else {
+                res.render("views/join-the-club", {wrong: true});
+            }
+        } catch (err) {
+            return next(err);
         }
-    } catch (err) {
-        return next(err);
+    } else {
+        res.redirect("/login");
     }
 })
 
