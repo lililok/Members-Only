@@ -20,6 +20,8 @@ router.post("/join-the-club", user_controller.join);
 router.get("/new-message", (req, res) => res.render("views/new-message"));
 router.post("/new-message", message_controller.message_post);
 
+router.post('/message_delete', message_controller.message_delete);
+
 router.get("/profile", user_controller.profile);
 
 router.get("/logout", (req, res, next) => {

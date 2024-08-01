@@ -16,5 +16,10 @@ exports.message_post = asyncHandler(async (req, res, next) => {
 })
 
 exports.message_delete = asyncHandler(async (req, res, next) => {
-    
+    try {
+        await pool.query("DELETE FROM messages WHERE id = $1", [req.body.message_id]);
+        res.redirect("/home");
+    } catch (err) {
+        return next(err);
+    }
 })

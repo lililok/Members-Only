@@ -39,6 +39,7 @@
                   <% } %>
                 <% if (user && user.admin) { %>
                   <form action="/message_delete" method="POST">
+                    <input type="hidden" name="message_id" value="<%= message.id %>">
                     <button class="w-full shadow-xl py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none !mt-8">
                       Delete
                     </button>
