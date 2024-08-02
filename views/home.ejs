@@ -31,21 +31,19 @@
         <div class="messages grid grid-cols-3 gap-4">
             <% messages.forEach(message => { %>
             <ul class="border border-gray-200 p-6">
-              <li class="grid grid-cols-3 items-center">
                 <p><strong>Message:</strong> <%= message.main_text %></p>
                 <% if (user && user.member) { %>
                     <p><strong>By:</strong> <%= message.username %></p>
                     <p class="text-xs text-slate-400 text-end"><%= message.send_date %></p>
                   <% } %>
                 <% if (user && user.admin) { %>
-                  <form action="/message_delete" method="POST">
+                  <form action="/message_delete" method="POST" class="flex justify-end">
                     <input type="hidden" name="message_id" value="<%= message.id %>">
-                    <button class="w-full shadow-xl py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none !mt-8">
+                    <button class="shadow-xl py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none !mt-8">
                       Delete
                     </button>
                   </form>
                   <% } %>
-              </li>
             </ul>
             <% }) %>
         </div>

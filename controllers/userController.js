@@ -1,3 +1,4 @@
+const { body, validationResult } = require('express-validator');
 const asyncHandler = require("express-async-handler");
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
@@ -54,22 +55,42 @@ exports.profile = asyncHandler(async (req, res, next) => {
     }
 })
 
-exports.signup = asyncHandler(async (req, res, next) => {
-    try {
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-        await pool.query("INSERT INTO user_data (firstname, lastname, username, password, member, admin) VALUES ($1, $2, $3, $4, $5, $6)", [
-            req.body.firstname,
-            req.body.lastname,
-            req.body.username,
-            hashedPassword,
-            false,
-            false
-        ]);
-        res.redirect("/home");
-    } catch (err) {
-        return next(err);
-    }
-})
+exports.signup = [
+    body('firstname').trim().isLength({ min: 1 }).escape().withMessage('not empty!'),
+    body('lastname').trim().isLength({ min: 1 }).escape().withMessage('not empty!'),
+    body('username').trim().isLength({ min: 1 }).escape().withMessage('not empty!'),
+    body('password').trim().isLength({ min: 6 }).escape().withMessage('>=6 chars for security'),
+    body('confirmPassword').trim().custom((value, { req }) => {
+        if (value !== req.body.password) {
+            throw new Error('no match');
+        }
+        return true;
+    }),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.render('views/sign-up', { errors: errors.array() });
+        }
+
+        try {
+            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            await pool.query("INSERT INTO user_data (firstname, lastname, username, password, member, admin) VALUES ($1, $2, $3, $4, $5, $6)", [
+                req.body.firstname,
+                req.body.lastname,
+                req.body.username,
+                hashedPassword,
+                false,
+                false
+            ]);
+            res.redirect("/home");
+        } catch (err) {
+            return next(err);
+        }
+    })
+]
+
 
 exports.join = asyncHandler(async (req, res, next) => {
     if (req.isAuthenticated()) {
