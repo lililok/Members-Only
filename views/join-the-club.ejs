@@ -14,14 +14,21 @@
 </div>
 </nav>
 
-<h1>Enter the secret passcode to join the club!</h1>
-<p>Hint #1: the most popular Queen song</p>
-<p>Hint #2: kebab-cased</p>
-<form action="/join-the-club" method="POST">
-    <label for="passcode">Passcode</label>
-    <input name="passcode" type="passcode" />
-    <button>Enter</button>
-</form>
-    <% if (wrong) { %>
-        <p>Try again!</p>
-    <% } %>
+<main class="font-[sans-serif] flex flex-col items-center justify-center py-6 px-4">
+    <div class="border border-gray-300 rounded-lg p-6 max-w-md shadow-[0_2px_22px_-4px_rgba(93,96,127,0.2)] w-full text-center">
+        <h1 class="text-gray-800 text-2xl font-extrabold mb-4">Enter the secret passcode to join the club!</h1>
+        <p class="text-gray-600 mb-2">Hint #1: the most popular Queen song</p>
+        <p class="text-gray-600 mb-4">Hint #2: kebab-cased</p>
+
+        <form action="/join-the-club" method="POST" class="space-y-4">
+            <div class="relative flex flex-col items-start">
+                <input name="passcode" type="text" required class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter passcode" />
+            </div>
+            <button type="submit" class="w-full shadow-xl py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">Enter</button>
+        </form>
+
+        <% if (wrong) { %>
+            <p class="text-red-500 text-sm mt-4">Incorrect passcode. Please try again!</p>
+        <% } %>
+    </div>
+</main>
