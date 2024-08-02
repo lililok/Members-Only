@@ -28,17 +28,6 @@
       </div>
 
       <div class="border border-gray-300 rounded-lg p-6 max-w-md shadow-lg max-md:mx-auto">
-        <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
-          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <strong class="font-bold">Error!</strong>
-            <ul>
-              <% errors.forEach(function(error) { %>
-                <li><%= error.msg %></li>
-              <% }) %>
-            </ul>
-          </div>
-        <% } %>
-
         <form action="/sign-up" method="POST" class="space-y-4">
           <div class="mb-8">
             <h3 class="text-gray-800 text-3xl font-extrabold">Sign up</h3>
@@ -78,6 +67,11 @@
 
           <p class="text-sm mt-8 text-center text-gray-800">Already got an account? <a href="/login" class="text-blue-600 font-semibold hover:underline ml-1">Login here</a></p>
         </form>
+        <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+          <% errors.forEach(function(error) { %>
+            <p class="text-red-600 text-center font-black"><%= error.msg %></p>
+          <% }) %>
+        <% } %>
       </div>
     </div>
   </div>

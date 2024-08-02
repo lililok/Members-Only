@@ -7,11 +7,17 @@ const LocalStrategy = require('passport-local').Strategy;
 require('dotenv').config();
 
 exports.login = asyncHandler(async (req, res, next) => {
-    passport.authenticate("local", {
-        successRedirect: "/home",
-        failureRedirect: "/login"
+    passport.authenticate("local", (err, user, info) => {
+        if (err) { return next(err); }
+        if (!user) {
+            return res.render("views/login", { error: info.message });
+        }
+        req.logIn(user, (err) => {
+            if (err) { return next(err); }
+            return res.redirect("/home");
+        });
     })(req, res, next);
-})
+});
 
 exports.home = asyncHandler(async (req, res, next) => {
     let user_data = undefined;
@@ -23,7 +29,6 @@ exports.home = asyncHandler(async (req, res, next) => {
         ORDER BY messages.send_date DESC
         LIMIT 10
     `);
-    const messages_data = messageRows;
 
     const formattedMessages = messageRows.map(message => ({
         ...message,
@@ -56,13 +61,13 @@ exports.profile = asyncHandler(async (req, res, next) => {
 })
 
 exports.signup = [
-    body('firstname').trim().isLength({ min: 1 }).escape().withMessage('not empty!'),
-    body('lastname').trim().isLength({ min: 1 }).escape().withMessage('not empty!'),
-    body('username').trim().isLength({ min: 1 }).escape().withMessage('not empty!'),
-    body('password').trim().isLength({ min: 6 }).escape().withMessage('>=6 chars for security'),
-    body('confirmPassword').trim().custom((value, { req }) => {
+    body('firstname').trim().isLength({ min: 1 }).escape().withMessage('First name should have at least 1 character!'),
+    body('lastname').trim().isLength({ min: 1 }).escape().withMessage('Last name should have at least 1 character!'),
+    body('username').trim().isLength({ min: 1 }).escape().withMessage('User name should have at least 1 character!'),
+    body('password').trim().isLength({ min: 6 }).escape().withMessage('Password should have at least 6 characters!'),
+    body('repeat_password').trim().custom((value, { req }) => {
         if (value !== req.body.password) {
-            throw new Error('no match');
+            throw new Error('Passwords do not match');
         }
         return true;
     }),
@@ -84,7 +89,7 @@ exports.signup = [
                 false,
                 false
             ]);
-            res.redirect("/home");
+            res.redirect("/login");
         } catch (err) {
             return next(err);
         }

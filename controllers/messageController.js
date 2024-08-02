@@ -4,7 +4,7 @@ const pool = require('../db/pool.js');
 
 
 exports.message_post = [
-    body('message', 'not empty!').trim().isLength({ min: 1 }).escape(),
+    body('message', 'Message should have at least 1 character!').trim().isLength({ min: 1 }).escape(),
 
     asyncHandler(async (req, res, next) => {
         const errors = validationResult(req);

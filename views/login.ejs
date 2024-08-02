@@ -52,6 +52,11 @@
 
                     <p class="text-sm !mt-8 text-center text-gray-800">Don't have an account? <a href="/sign-up" class="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Sign up here</a></p>
                 </form>
+                <% if (typeof error !== 'undefined') { %>
+                    <div class="text-red-500 text-sm mb-4">
+                        <p class="text-red-600 text-center font-black mt-5"><%= error %></p>
+                    </div>
+                <% } %>
             </div>
 
             <div class="lg:h-[400px] md:h-[300px] max-md:mt-8">
